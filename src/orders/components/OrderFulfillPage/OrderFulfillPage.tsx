@@ -437,7 +437,7 @@ const OrderFulfillPage: React.FC<OrderFulfillPageProps> = props => {
                   )}
                 </TableBody>
               </ResponsiveTable>
-              {shopSettings?.fulfillmentAutoConfirm && (
+              {shopSettings?.fulfillmentAutoApprove && (
                 <CardActions className={classes.actionBar}>
                   <ControlledCheckbox
                     checked={data.sendInfo}
@@ -451,7 +451,7 @@ const OrderFulfillPage: React.FC<OrderFulfillPageProps> = props => {
             <SaveButtonBar
               disabled={!shouldEnableSave()}
               labels={{
-                save: shopSettings?.fulfillmentAutoConfirm
+                save: shopSettings?.fulfillmentAutoApprove
                   ? intl.formatMessage(messages.submitFulfillment)
                   : intl.formatMessage(messages.submitPrepareFulfillment)
               }}
