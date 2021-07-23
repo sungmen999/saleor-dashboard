@@ -81,7 +81,7 @@ const selectStatus = (status: CardTitleStatus) => {
       return StatusType.NEUTRAL;
     case FulfillmentStatus.REFUNDED_AND_RETURNED:
       return StatusType.NEUTRAL;
-    case FulfillmentStatus.WAITING_FOR_ACCEPTANCE:
+    case FulfillmentStatus.WAITING_FOR_APPROVAL:
       return StatusType.ALERT;
     case FulfillmentStatus.CANCELED:
       return StatusType.ERROR;
