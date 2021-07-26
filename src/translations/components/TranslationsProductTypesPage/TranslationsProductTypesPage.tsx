@@ -63,6 +63,7 @@ const TranslationsProductTypesPage: React.FC<TranslationsProductTypesPageProps> 
   onPreviousPage
 }) => {
   const intl = useIntl();
+  const choicesEdges = data?.attribute?.choices?.edges;
 
   return (
     <Container>
@@ -110,62 +111,65 @@ const TranslationsProductTypesPage: React.FC<TranslationsProductTypesPageProps> 
         onSubmit={onSubmit}
       />
       <CardSpacer />
-      <TranslationFields
-        activeField={activeField}
-        disabled={disabled}
-        initialState={true}
-        title={intl.formatMessage(messages.values)}
-        fields={
-          data?.attribute?.choices?.edges?.map(
-            ({ node: attributeValue }, attributeValueIndex) => {
-              const isRichText =
-                attributeValue?.inputType === AttributeInputTypeEnum.RICH_TEXT;
-              const displayName = isRichText
-                ? intl.formatMessage({
-                    defaultMessage: "Text",
-                    description: "attribute richtext value"
-                  })
-                : intl.formatMessage(
-                    {
-                      defaultMessage: "Value {number}",
-                      description: "attribute values"
-                    },
-                    {
-                      number: attributeValueIndex + 1
-                    }
-                  );
+      {choicesEdges?.length > 0 ? (
+        <TranslationFields
+          activeField={activeField}
+          disabled={disabled}
+          initialState={true}
+          title={intl.formatMessage(messages.values)}
+          fields={
+            data?.attribute?.choices?.edges?.map(
+              ({ node: attributeValue }, attributeValueIndex) => {
+                const isRichText =
+                  attributeValue?.inputType ===
+                  AttributeInputTypeEnum.RICH_TEXT;
+                const displayName = isRichText
+                  ? intl.formatMessage({
+                      defaultMessage: "Text",
+                      description: "attribute richtext value"
+                    })
+                  : intl.formatMessage(
+                      {
+                        defaultMessage: "Value {number}",
+                        description: "attribute values"
+                      },
+                      {
+                        number: attributeValueIndex + 1
+                      }
+                    );
 
-              return {
-                displayName,
-                name: `${
-                  isRichText ? fieldNames.richTextValue : fieldNames.value
-                }:${attributeValue.id}`,
-                translation:
-                  (isRichText
-                    ? attributeValue?.translation?.richText
-                    : attributeValue?.translation?.name) || null,
-                type: (isRichText
-                  ? "rich"
-                  : "short") as TranslationField["type"],
-                value: isRichText
-                  ? attributeValue?.richText
-                  : attributeValue?.name
-              };
-            }
-          ) || []
-        }
-        saveButtonState={saveButtonState}
-        pagination={{
-          settings,
-          onUpdateListSettings,
-          pageInfo,
-          onNextPage,
-          onPreviousPage
-        }}
-        onEdit={onEdit}
-        onDiscard={onDiscard}
-        onSubmit={onSubmit}
-      />
+                return {
+                  displayName,
+                  name: `${
+                    isRichText ? fieldNames.richTextValue : fieldNames.value
+                  }:${attributeValue.id}`,
+                  translation:
+                    (isRichText
+                      ? attributeValue?.translation?.richText
+                      : attributeValue?.translation?.name) || null,
+                  type: (isRichText
+                    ? "rich"
+                    : "short") as TranslationField["type"],
+                  value: isRichText
+                    ? attributeValue?.richText
+                    : attributeValue?.name
+                };
+              }
+            ) || []
+          }
+          saveButtonState={saveButtonState}
+          pagination={{
+            settings,
+            onUpdateListSettings,
+            pageInfo,
+            onNextPage,
+            onPreviousPage
+          }}
+          onEdit={onEdit}
+          onDiscard={onDiscard}
+          onSubmit={onSubmit}
+        />
+      ) : null}
     </Container>
   );
 };
