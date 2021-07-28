@@ -11,7 +11,9 @@ ENV APP_MOUNT_URI ${APP_MOUNT_URI:-/dashboard/}
 ENV STATIC_URL ${STATIC_URL:-/dashboard/}
 RUN STATIC_URL=${STATIC_URL} API_URI=${API_URI} APP_MOUNT_URI=${APP_MOUNT_URI} npm run build
 
-FROM nginx:stable
-WORKDIR /app
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/build/ /app/
+FROM nginx:stable-alpine
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder /app/build/dashboard /usr/share/nginx/html
+COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
